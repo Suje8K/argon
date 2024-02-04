@@ -22,7 +22,7 @@ model Companion {
   userId       String
   userName     String
   src          String
-  name         String
+  name         String @db.String
   description  String
   instructions String
   seed         String
@@ -30,9 +30,30 @@ model Companion {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  category   Category @relation(fields: [categoryId], references: [id])
+  category   Category  @relation(fields: [categoryId], references: [id])
   categoryId String
+  messages   Message[]
 
   @@index([categoryId])
   @@fulltext([name])
+}
+
+enum Role {
+  user
+  system
+}
+
+model Message {
+  id        String   @id @default(uuid()) @map("_id")
+  role      Role
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  companionId String
+  userId      String
+
+  companion Companion @relation(fields: [companionId], references: [id], onDelete: Cascade)
+
+  @@index([companionId])
 }
