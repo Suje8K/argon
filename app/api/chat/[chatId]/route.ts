@@ -55,7 +55,7 @@ export async function POST(
     const companionKey = {
       companionName: name!,
       userId: user.id,
-      modelName: "llama2-13b",
+      modelName: companion.modeldesc,
     };
     const memoryManager = await MemoryManager.getInstance();
 
@@ -86,8 +86,7 @@ export async function POST(
     const { handlers } = LangChainStream();
     // Call Replicate for inference
     const model = new Replicate({
-      model:
-        "a16z-infra/llama-2-13b-chat:df7690f1994d94e96ad9d568eac121aecf50684a0b0963b25a41cc40061269e5",
+      model: companion.modelname as `${string}/${string}:${string}`,
       input: {
         max_length: 2048,
       },
@@ -100,16 +99,11 @@ export async function POST(
     const resp = String(
       await model
         .invoke(
-          `
-    ONLY generate plain sentences without prefix of who is speaking. DO NOT use ${companion.name}: prefix. 
-
-    ${companion.instructions}
-
-    Below are relevant details about ${companion.name}'s past and the conversation you are in.
-    ${relevantHistory}
-
-
-    ${recentChatHistory}\n${companion.name}:`
+          `ONLY generate plain sentences without prefix of who is speaking. DO NOT use ${companion.name}: prefix. 
+          ${companion.instructions}
+          Below are relevant details about ${companion.name}'s past and the conversation you are in.
+          ${relevantHistory}
+          ${recentChatHistory}\n${companion.name}:`
         )
         .catch(console.error)
     );

@@ -6,7 +6,16 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const user = await currentUser();
-    const { src, name, description, instructions, seed, categoryId } = body;
+    const {
+      src,
+      name,
+      description,
+      instructions,
+      seed,
+      categoryId,
+      modelname,
+      modeldesc,
+    } = body;
 
     if (!user || !user.id || !user.firstName) {
       return new NextResponse("Unauthorized", { status: 401 });
@@ -18,7 +27,9 @@ export async function POST(req: Request) {
       !description ||
       !instructions ||
       !seed ||
-      !categoryId
+      !categoryId ||
+      !modelname ||
+      !modeldesc
     ) {
       return new NextResponse("Missing required fields", { status: 400 });
     }
@@ -33,6 +44,8 @@ export async function POST(req: Request) {
         description,
         instructions,
         seed,
+        modelname,
+        modeldesc,
       },
     });
     return NextResponse.json(companion);

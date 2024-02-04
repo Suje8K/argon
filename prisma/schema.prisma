@@ -26,6 +26,8 @@ model Companion {
   description  String
   instructions String
   seed         String
+  modelname    String
+  modeldesc    String
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

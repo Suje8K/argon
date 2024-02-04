@@ -66,6 +66,12 @@ const formSchema = z.object({
   src: z.string().min(1, {
     message: "Seed is required",
   }),
+  modelname: z.string().min(5, {
+    message: "Model name is required",
+  }),
+  modeldesc: z.string().min(5, {
+    message: "Model description is required",
+  }),
   categoryId: z.string().min(1, {
     message: "Category is required",
   }),
@@ -86,6 +92,8 @@ export const CompanionForm = ({
       instructions: "",
       seed: "",
       src: "",
+      modelname: "",
+      modeldesc: "",
       categoryId: undefined,
     },
   });
@@ -135,6 +143,7 @@ export const CompanionForm = ({
             name="src"
             render={({ field }) => (
               <FormItem className="flex flex-col items-center justify-center space-y-4">
+                <FormLabel>Image file name</FormLabel>
                 <FormControl>
                   <Input
                     disabled={isLoading}
@@ -148,6 +157,44 @@ export const CompanionForm = ({
             )}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <FormField
+              name="modelname"
+              render={({ field }) => (
+                <FormItem className="col-span-2 md:col-span-1">
+                  <FormLabel>Model name</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Model name from Replicate"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please add Model name from Replicate
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              name="modeldesc"
+              render={({ field }) => (
+                <FormItem className="col-span-2 md:col-span-1">
+                  <FormLabel>Model description</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={isLoading}
+                      placeholder="Model Desc from Replicate"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Please add Model Desc from Replicate
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <FormField
               name="name"
               render={({ field }) => (
